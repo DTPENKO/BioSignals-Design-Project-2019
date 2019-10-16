@@ -1,14 +1,24 @@
 %Biosignals Group 10 Long Term Movement Gait Fall Risk Index
-% Contributors: Tanner Penko, Hannah Osswald, Brandon Christian, Amanda ??,
-% Fran P
+% Contributors: Tanner Penko, Hannah Osswald, Brandon Christian, Amanda ,
+% and Fran P
 
+% Load Relevant Excel Files to Extract Data.
 
+%[PatientInfoText, PatientInfoNumeric, PatientInfoRaw] = xlsread('ClinicalDemogData_COFL.xlsx');
+%[~,~, PatientSelfReportInfoRawData] = xlsread('ReportHome75h.xlsx');
 
-%[PatientInfoText, PatientInfoNumeric, PatientInfoRaw] = xlsread(GaitFFILE HERE);
+% Load Control Group 3 Day Data ~~
 
-% Load Control Group Data ~~
-
-for x = 1:1:1 % 44 People in Control Group
-    ControlSubjectData(x) = load(CO00(x)m.mat);
-    ControlSubjectInfo(x) = load(CO00(x)m.info);
+for x = 1:1:2 % 44 People in Control Group
+    DataFileNameX = sprintf('CO00%dm.mat', x);
+    %InfoFileNameX = sprintf('CO00%dm.info', x);
+    ControlSubjectData(x) = load(DataFileNameX);
+    %ControlSubjectInfo(x) = load(InfoFileNameX);
 end
+
+% Load Fall Risk Group 3 Day Data ~~
+
+
+% Load Control Group Labwalk Data ~~
+
+% Load Fall Risk Group Labwalk Data ~~
