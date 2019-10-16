@@ -9,6 +9,6 @@
 % Load Control Group Data ~~
 
 for x = 1:1:1 % 44 People in Control Group
-    ControlSubjectData(x) = load(CO00(x).mat);
-    ControlSubjectInfo(x) = load(CO00(x).info);
+    ControlSubjectData(x) = load(CO00(x)m.mat);
+    ControlSubjectInfo(x) = load(CO00(x)m.info);
 end
