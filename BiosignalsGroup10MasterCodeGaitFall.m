@@ -10,7 +10,7 @@
 % Load Control Group 3 Day Data ~~
 
 for x = 1:1:2 % 44 People in Control Group
-    DataFileNameX = sprintf('CO00%dm.mat', x);
+    DataFileNameX = sprintf('E:', x);
     %InfoFileNameX = sprintf('CO00%dm.info', x);
     ControlSubjectData(x) = load(DataFileNameX);
     %ControlSubjectInfo(x) = load(InfoFileNameX);
