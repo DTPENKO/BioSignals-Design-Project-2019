@@ -9,11 +9,21 @@
 
 % Load Control Group 3 Day Data ~~
 
-for x = 1:1:2 % 44 People in Control Group
-    %DataFileNameX = sprintf('E:\GaitDatabase\.mat version files\3DayControl\CO00%dm.mat', x);
-    %InfoFileNameX = sprintf('E:\GaitDatabase\.matCO00%dm.info', x);
-    ControlSubjectData(x) = load('E:\GaitDatabase\.mat version files\3DayControl\CO001m.mat');
-   % ControlSubjectInfo(x) = load(InfoFileNameX);
+%3DayControlGroupDataPath = {'E:\GaitDatabase\.mat version files\3DayControl\CO00%dm.mat'};
+%3DayFallersGroupDataPath = {'E:\GaitDatabase\.mat version files\3DayFallers\CO00%dm.mat'};
+
+for x = 1:1:44 % 44 People in Control Group (Some data is missing though)
+    if x < 10
+        DataFileNameX = ('E:\GaitDatabase\.mat version files\3DayControl\CO001m');
+        %InfoFileNameX = sprintf('E:\GaitDatabase\.matCO00%dm.info', x);
+        ControlSubjectData(x) = load(DataFileNameX);
+        %ControlSubjectInfo(x) = load(InfoFileNameX);
+    %else
+        %DataFileNameX = sprintf('E:\GaitDatabase\.mat version files\3DayControl\CO00%dm.mat', x);
+        %InfoFileNameX = sprintf('E:\GaitDatabase\.matCO00%dm.info', x);
+        %ControlSubjectData(x) = load('E:\GaitDatabase\.mat version files\3DayControl\CO001m.mat');
+       % ControlSubjectInfo(x) = load(InfoFileNameX);
+    end
 end
 
 % Load Fall Risk Group 3 Day Data ~~
