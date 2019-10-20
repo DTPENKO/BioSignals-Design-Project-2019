@@ -4,7 +4,7 @@ clc
 % This script converts an EDF (european data file) downloaded from
 % physionet into physical units and then saves it as a .mat file in the
 % file path specified.
-% binary files. ***Note that the 
+% Contributor(s): Tanner Penko & Company
 
 
 FileNames = dir('*.txt');
