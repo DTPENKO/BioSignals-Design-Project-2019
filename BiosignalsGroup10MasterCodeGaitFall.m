@@ -1,4 +1,4 @@
-%Biosignals Group 10 Long Term Movement Gait Fall Risk Index
+%Biosignals Group 10 Long Term Movement Gait Fall Risk 
 % Contributors: Tanner Penko, Hannah Osswald, Brandon Christian, Amanda ,
 % and Fran P
 
@@ -8,31 +8,50 @@
 [PatientInfoText, PatientInfoNumeric, PatientInfoRaw] = xlsread('ClinicalDemogData_COFL.xlsx');
 [~,~, PatientSelfReportInfoRawData] = xlsread('ReportHome75h.xlsx');
 
-% Load Control Group 3 Day Data ~~
+% Some processing function here to load group sets via the excel files
+% ****Brandon mentioned doing this?
 
-%3DayControlGroupDataPath = {'E:\GaitDatabase\.mat version files\3DayControl\CO00%dm.mat'};
-%3DayFallersGroupDataPath = {'E:\GaitDatabase\.mat version files\3DayFallers\CO00%dm.mat'};
 
-FileNames = dir('*.mat'); % Find all file names
+% Load in selected variables *** Note that this can crash matlab if selected
 
-LoadThisManyVariables = 1:1:length(FileNames) %Default = length(FileNames) *** Specify files you want to load
-
-% May add more code here to seperate variables in to sections i.e. control
-% group vs fall group and labwalk seperation.
-
-% Load all specified data *** Note that this can crash matlab if selected
-% portion is too large. 
-
-for x = LoadThisManyVariables
-
-    SampledFile = FileNames(x).name;
-    GaitFile(x) = load([SampledFile,'.mat']);
+    % Search directory for all .mat files
+    FileNames = dir('*.mat'); % Find all file names in current directory ***This is your external harddrive with files OR github local repo if doing smaller file testing
     
-end
+    SomeInputYouWant = input('Enter number of files wanted or a matrix size i.e x:y size' )
+    if (SomeInputYouWant = Matrix(xxx)
+       LoadThisManyVariables = SomeInputYouWant; %Default = length(FileNames) *** Specify files you want to load
+    else
+       LoadThisManyVariables = 1:1:SomeInputYouWant; %Default = length(FileNames) *** Specify files you want to load
+    end
 
-% Load Fall Risk Group 3 Day Data ~~
+    for x = LoadThisManyVariables
+
+        SampledFile = FileNames(x).name; % SAMPLEDFILE SHOULD BE DETERMINED BASED ON EXCEL IMPORT OR TEST .mat FILE
+        GaitFile(x) = load([SampledFile,'.mat']);  % GAITFILE(X) SHOULD BE BASED ON GROUPING VARIABLES DEFINED IN EXCEL IMPORT OR TEST .mat FILE
+    
+    end
 
 
-% Load Control Group Labwalk Data ~~
+% INITIAL PLOTTING AND WINDOWING
+% Note this may need to be limited to one or two files if datasets chosen
+% is large. 
 
-% Load Fall Risk Group Labwalk Data ~~
+fs = 100; % Samples/second
+WindowSize = 60; % Seconds of data in the window
+PercentOverlap = 0.5; % Window over lap from previous window (percentage of samples)
+SamplesPerWindow = WindowSize * fs; % Number of samples in a window
+WindowIncrementSwitch = (1-PercentOverlap) * SamplesPerWindow; % Number of samples in an incremented window
+
+
+% PROCESSING FUNCTIONS BELOW
+
+
+% Filter out all walking data that is less than 60 seconds long with SMA $
+% power decomp
+
+
+% Filter: low pass all data to remove high frequency data ~cutoff F = 40 Hz
+
+
+% Energy frequency domain filter, remove below 0.05 energy
+
