@@ -1,4 +1,4 @@
-%Biosignals Group 10 Long Term Movement Gait Fall Risk 
+% Biosignals Group 10 Long Term Movement Gait Fall Risk 
 % Contributors: Tanner Penko, Hannah Osswald, Brandon Christian, Amanda ,
 % and Fran P
 
