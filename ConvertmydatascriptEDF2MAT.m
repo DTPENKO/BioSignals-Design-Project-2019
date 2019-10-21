@@ -7,11 +7,12 @@ clc
 % Contributor(s): Tanner Penko & Company
 
 
-FileNames = dir('*.txt');
+FileNames = dir('EDFFilesLabWalk\*.txt'); % Change this file path for whereever your files are located
 
 for x = 1:length(FileNames)
     
     SampledFile = FileNames(x).name;
     [~,DataPhysical] = edfread(SampledFile);
-    save(['MatlabConvertedFiles\' SampledFile '.mat'], 'DataPhysical');
+    save(['MatlabConvertedFileLabWalks\' SampledFile '.mat'], 'DataPhysical'); % Change this to be wherever you want the files created
+    
 end
