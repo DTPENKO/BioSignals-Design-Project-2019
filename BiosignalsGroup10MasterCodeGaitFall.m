@@ -4,8 +4,8 @@
 % Load Relevant Excel Files to Extract Data. **** excel files must be in
 % directory or pathed
 
-[PatientInfoText, PatientInfoNumeric, PatientInfoRaw] = xlsread('ClinicalDemogData_COFL.xlsx');
-[~,~, PatientSelfReportInfoRawData] = xlsread('ReportHome75h.xlsx');
+[~,~,PatientInfoRaw] = xlsread('ClinicalDemogData_COFL.xlsx');
+[~,~,PatientSelfReportInfoRawData] = xlsread('ReportHome75h.xlsx');
 
 [FallerGroupIndex, NonFallerGroupIndex] = ExcellFileProcessingFunction(PatientInfoRaw); %Column labels for spreadsheet output
 %excelHeader = {‘patientID#’, ‘Fall or Non-Faller’
@@ -16,63 +16,68 @@
 
    % Search directory for all .mat files
 
-   FileNames = dir('*.mat'); % Find all file names in current directory ***This is your external harddrive with files OR github local repo if doing smaller file testing. Compare this file with groupset info to find .mat files needed.
+   RawFileNames = dir('*.mat'); % Find all file names in current directory ***This is your external harddrive with files OR github local repo if doing smaller file testing. Compare this file with groupset info to find .mat files needed.
 
    for x = 1:1:length(UploadData)
 
-       SampledFile = FileNames(x).name; % SAMPLEDFILE SHOULD BE DETERMINED BASED ON EXCEL IMPORT OR TEST .mat FILE
+       SampledFile = RawFileNames(x).name; % SAMPLEDFILE SHOULD BE DETERMINED BASED ON EXCEL IMPORT OR TEST .mat FILE
        GaitFile(x) = load([SampledFile,'.mat']);  % GAITFILE(X) SHOULD BE BASED ON GROUPING VARIABLES DEFINED IN EXCEL IMPORT OR TEST .mat FILE
 
    end
 
+   
 % INITIAL PLOTTING AND WINDOWING *** This may need to be limited
+WindowNoWindow = input('Would you like to window a sample (type Y/N): ', 's')
 
-Sample2Window = 'CO001m'; % Select sample that will be windowed.
-WindowSize = 60; % Seconds of data in the window
-PercentOverlap = 0.5; % Window overlap from previous window (percentage of samples)
-SamplesPerWindow = WindowSize * fs; % Number of samples in a window
-WindowIncrementSwitch = (1-PercentOverlap) * SamplesPerWindow; % Number of samples in an incremented window
-WindowIncrementTime = (((1-PercentOverlap)*SamplesPerWindow)/fs); % Time interval in a window increment used for number of samples
-StartIndex = 1; % Sample to start with
-EndIndex = SamplesPerWindow;
-WindowCounter = 0; % Number goes up each window
+if WindowNoWindow == 'Y'
+    %Sample2Window = input('What sample would you like to window?:  ','s')
+    SampleRequest = 'Sample1'; % Select sample that will be windowed. Match this to data input variable function output above.
+    Sample2Window = eval(SampleRequest);
+    fs = 100 %Hz frequency sampling rate
+    WindowSize = 8; % Seconds of data in the window
+    PercentOverlap = 0.5; % Window overlap from previous window (percentage of samples)
+    SamplesPerWindow = WindowSize * fs; % Number of samples in a window
+    WindowIncrementSwitch = (1-PercentOverlap) * SamplesPerWindow; % Number of samples in an incremented window
+    WindowIncrementTime = (((1-PercentOverlap)*SamplesPerWindow)/fs); % Time interval in a window increment used for number of samples
+    StartIndex = 1; % Sample to start with
+    EndIndex = SamplesPerWindow;
+    WindowCounter = 0; % Number goes up each window
 
-while(endIndex<=length(Sample2Window))
+    while(endIndex<=length(Sample2Window))
 
-   %Assign Accelerometer data for current window to sampleGaitData
+        %Assign Accelerometer data for current window to Sample2Window
 
+        CurrentSample2Window = Sample2Window(:,StartIndex:EndIndex);
 
-   sampGaitData = Sample2Window(startIndex:endIndex,:);
+        %Plot Current Accelerometer Data in Specified Window
+        hold on
 
-   %Plot Current Accelerometer Data in Specified Window
-   hold on
+        plot(CurrentSample2Window);
 
-   plot(sampGaitData);
+        xlabel('Sample Number (n)');
 
-   xlabel('Sample Number (n)');
+        ylabel('Acceleration (degrees/second)');
 
-   ylabel('Acceleration (degrees/second)');
+        %Set y-limit for plotting visualization
 
-   %Set y-limit for plotting visualization
+        ylim([-200,200]);
 
-   ylim([-200,200]);
+        %Plot Mean in Plot Title
 
-   %Plot Mean in Plot Title
+        title(['The mean voltage of the current Gait window is: ',num2str(currWindMean)]);
 
-   title(['The mean voltage of the current Gait window is: ',num2str(currWindMean)]);
+        %Increment Accelerometer Data to next window for analysis and plotting
 
-   %Increment Accelerometer Data to next window for analysis and plotting
+        startIndex = startIndex+windIncrement;
 
-   startIndex = startIndex+windIncrement;
+        endIndex = endIndex+windIncrement;
 
-   endIndex = endIndex+windIncrement;
+         %Wait for key to be pressed to increment through next window
 
-   %Wait for key to be pressed to increment through next window
+         waitforbuttonpress;
 
-   waitforbuttonpress;
-
+    end
 end
-
 % PROCESSING FUNCTIONS BELOW
 
 % Filter: low pass all data to remove high frequency data ~cutoff F = XX Hz
